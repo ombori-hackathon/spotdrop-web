@@ -48,16 +48,15 @@ export interface TokenResponse {
   token_type: string;
 }
 
-export type Category = 'cafe' | 'restaurant' | 'bar' | 'park' | 'museum' | 'shop' | 'other';
+export type Category = 'cafe' | 'viewpoint' | 'activity' | 'shop' | 'bar' | 'restaurant';
 
 export const CATEGORIES: { value: Category; label: string; color: string }[] = [
-  { value: 'cafe', label: 'Cafe', color: '#22C55E' },
-  { value: 'restaurant', label: 'Restaurant', color: '#F97316' },
-  { value: 'bar', label: 'Bar', color: '#A855F7' },
-  { value: 'park', label: 'Park', color: '#14B8A6' },
-  { value: 'museum', label: 'Museum', color: '#3B82F6' },
-  { value: 'shop', label: 'Shop', color: '#EC4899' },
-  { value: 'other', label: 'Other', color: '#6B7280' },
+  { value: 'cafe', label: 'Cafe', color: '#F59E0B' },           // hsl(38, 92%, 50%) - amber
+  { value: 'viewpoint', label: 'Viewpoint', color: '#22C55E' }, // hsl(142, 71%, 45%) - green
+  { value: 'activity', label: 'Activity', color: '#3B82F6' },   // hsl(217, 91%, 60%) - blue
+  { value: 'shop', label: 'Shop', color: '#EC4899' },           // hsl(330, 81%, 60%) - pink
+  { value: 'bar', label: 'Bar', color: '#A855F7' },             // hsl(270, 70%, 60%) - purple
+  { value: 'restaurant', label: 'Restaurant', color: '#EF4444' }, // hsl(0, 84%, 60%) - red
 ];
 
 export function getCategoryColor(category: string): string {

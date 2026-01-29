@@ -24,8 +24,13 @@ function App() {
       <Sidebar />
 
       {selectedSpot && (
-        <div className="absolute bottom-4 left-4 z-10">
-          <SpotCard spot={selectedSpot} onClose={() => selectSpot(null)} />
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => selectSpot(null)}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <SpotCard spot={selectedSpot} onClose={() => selectSpot(null)} />
+          </div>
         </div>
       )}
 

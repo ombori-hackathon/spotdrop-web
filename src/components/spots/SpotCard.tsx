@@ -2,6 +2,46 @@ import { Coffee, Clock, DollarSign, Star, X } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { getCategoryColor, type Spot } from '../../types';
 
+const STAR_COLOR = '#F59E0B';
+const ICON_COLORS = {
+  best: 'hsl(38 92% 50%)',      // amber
+  time: 'hsl(239 84% 67%)',     // indigo
+  price: 'hsl(142 71% 45%)',    // green
+};
+
+function StarRating({ rating }: { rating: number }) {
+  const fullStars = Math.floor(rating);
+  const stars = [];
+
+  for (let i = 0; i < 5; i++) {
+    const filled = i < fullStars;
+    stars.push(
+      <Star
+        key={i}
+        className="w-4 h-4"
+        style={{ color: STAR_COLOR, fill: filled ? STAR_COLOR : 'transparent' }}
+      />
+    );
+  }
+
+  return <div className="flex gap-0.5">{stars}</div>;
+}
+
+function PriceLevel({ level }: { level: number }) {
+  return (
+    <span className="font-medium tracking-wide">
+      {[1, 2, 3, 4].map((i) => (
+        <span
+          key={i}
+          className={i <= level ? 'text-white' : 'text-slate-600'}
+        >
+          $
+        </span>
+      ))}
+    </span>
+  );
+}
+
 interface SpotCardProps {
   spot: Spot;
   onClose: () => void;
@@ -30,7 +70,7 @@ export function SpotCard({ spot, onClose }: SpotCardProps) {
         )}
 
         <span
-          className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold uppercase text-white"
+          className="absolute bottom-3 left-3 px-3 py-1 rounded-full text-xs font-semibold uppercase text-white"
           style={{ backgroundColor: categoryColor }}
         >
           {spot.category}
@@ -47,43 +87,40 @@ export function SpotCard({ spot, onClose }: SpotCardProps) {
       <div className="p-4">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-lg font-semibold text-white">{spot.title}</h3>
-          {spot.rating && (
-            <div className="flex items-center gap-1">
-              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-              <span className="text-white font-medium">{spot.rating.toFixed(1)}</span>
-            </div>
-          )}
+          {spot.rating && <StarRating rating={spot.rating} />}
         </div>
 
         {spot.description && (
           <p className="text-slate-400 text-sm mb-4 line-clamp-2">{spot.description}</p>
         )}
 
-        <div className="space-y-2">
-          {spot.best && (
-            <div className="flex items-center gap-2 text-sm">
-              <Coffee className="w-4 h-4 text-slate-400" />
-              <span className="text-slate-400">Best:</span>
-              <span className="text-white">{spot.best}</span>
-            </div>
-          )}
+        {(spot.best || spot.best_time || spot.price_level) && (
+          <div className="border-t border-slate-700 pt-4 space-y-2">
+            {spot.best && (
+              <div className="flex items-center gap-2 text-sm">
+                <Coffee className="w-4 h-4" style={{ color: ICON_COLORS.best }} />
+                <span className="text-slate-400">Best:</span>
+                <span className="text-white">{spot.best}</span>
+              </div>
+            )}
 
-          {spot.best_time && (
-            <div className="flex items-center gap-2 text-sm">
-              <Clock className="w-4 h-4 text-slate-400" />
-              <span className="text-slate-400">Best time:</span>
-              <span className="text-white">{spot.best_time}</span>
-            </div>
-          )}
+            {spot.best_time && (
+              <div className="flex items-center gap-2 text-sm">
+                <Clock className="w-4 h-4" style={{ color: ICON_COLORS.time }} />
+                <span className="text-slate-400">Best time:</span>
+                <span className="text-white">{spot.best_time}</span>
+              </div>
+            )}
 
-          {spot.price_level && (
-            <div className="flex items-center gap-2 text-sm">
-              <DollarSign className="w-4 h-4 text-slate-400" />
-              <span className="text-slate-400">Price:</span>
-              <span className="text-white">{'$'.repeat(spot.price_level)}</span>
-            </div>
-          )}
-        </div>
+            {spot.price_level && (
+              <div className="flex items-center gap-2 text-sm">
+                <DollarSign className="w-4 h-4" style={{ color: ICON_COLORS.price }} />
+                <span className="text-slate-400">Price:</span>
+                <PriceLevel level={spot.price_level} />
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </Card>
   );

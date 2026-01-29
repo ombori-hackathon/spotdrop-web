@@ -40,9 +40,11 @@ describe('SpotCard', () => {
     expect(screen.getByText('cafe')).toBeInTheDocument();
   });
 
-  it('renders spot rating', () => {
-    render(<SpotCard spot={mockSpot} onClose={() => {}} />);
-    expect(screen.getByText('4.5')).toBeInTheDocument();
+  it('renders spot rating as stars', () => {
+    const { container } = render(<SpotCard spot={mockSpot} onClose={() => {}} />);
+    // Rating is now displayed as 5 star icons (SVGs)
+    const stars = container.querySelectorAll('.lucide-star');
+    expect(stars.length).toBe(5);
   });
 
   it('renders spot description', () => {
@@ -60,9 +62,11 @@ describe('SpotCard', () => {
     expect(screen.getByText('Morning')).toBeInTheDocument();
   });
 
-  it('renders price level', () => {
+  it('renders price level as dollar signs', () => {
     render(<SpotCard spot={mockSpot} onClose={() => {}} />);
-    expect(screen.getByText('$$')).toBeInTheDocument();
+    // Price level 2 = 2 active $ signs, 2 inactive $ signs (4 total)
+    const priceText = screen.getAllByText('$');
+    expect(priceText.length).toBe(4);
   });
 
   it('calls onClose when close button is clicked', () => {
